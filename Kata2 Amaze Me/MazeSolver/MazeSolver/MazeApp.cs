@@ -8,6 +8,10 @@ namespace MazeSolver
         public static void Main()
         {
             var mazeApp = new MazeApp();
+            /*
+             * maze1.txt works
+             * maze2.txt gets stuck
+             */
             mazeApp.Run(@"..\..\..\..\maze1.txt");
         }
 

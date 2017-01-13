@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MazeSolver
+﻿namespace MazeSolver
 {
     public class Point
     {
@@ -15,7 +13,7 @@ namespace MazeSolver
 
         public override string ToString()
         {
-            return String.Format("Point({0}, {1})", X, Y);
+            return $"Point({X}, {Y})";
         }
     }
 }

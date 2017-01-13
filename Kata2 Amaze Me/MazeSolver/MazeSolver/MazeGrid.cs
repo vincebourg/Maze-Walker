@@ -9,35 +9,23 @@
         // |
         // v
         // +ve Y
-        private readonly bool[][] m_Grid; //bool[y][x]
-        private readonly Point m_Start;
-        private readonly Point m_Finish;
 
         public MazeGrid(bool[][] grid, Point start, Point finish)
         {
-            m_Grid = grid;
-            m_Start = start;
-            m_Finish = finish;
+            Grid = grid;
+            StartPosition = start;
+            Finish = finish;
         }
 
-        public Point StartPosition
-        {
-            get { return m_Start; }
-        }
+        public Point StartPosition { get; }
 
         public bool AtFinish(DumbMazeWalker walker)
         {
             return Finish.X == walker.CurrentPosition.X && Finish.Y == walker.CurrentPosition.Y;
         }
 
-        public Point Finish
-        {
-            get { return m_Finish; }
-        }
+        public Point Finish { get; }
 
-        public bool[][] Grid
-        {
-            get { return m_Grid; }
-        }
+        public bool[][] Grid { get; }
     }
 }

@@ -4,21 +4,21 @@ namespace MazeSolver
 {
     public class DumbMazeWalker
     {
-        private MazeGrid m_MazeGrid;
-        private Orientation m_direc;
+        private readonly MazeGrid _mMazeGrid;
+        private Orientation _mDirec;
 
         public DumbMazeWalker(MazeGrid mazeGrid)
         {
-            m_MazeGrid = mazeGrid;
-            CurrentPosition = m_MazeGrid.StartPosition;
-            m_direc = Orientation.South;
+            _mMazeGrid = mazeGrid;
+            CurrentPosition = _mMazeGrid.StartPosition;
+            _mDirec = Orientation.South;
         }
 
         public bool CanSeeLeftTurning()
         {
             var pointToOurLeft = new Point(CurrentPosition.X, CurrentPosition.Y);
 
-            switch (m_direc)
+            switch (_mDirec)
             {
                 case Orientation.North:
                     pointToOurLeft.X -= 1;
@@ -36,26 +36,26 @@ namespace MazeSolver
                     throw new Exception();
             }
 
-            return m_MazeGrid.Grid[pointToOurLeft.Y][pointToOurLeft.X];
+            return _mMazeGrid.Grid[pointToOurLeft.Y][pointToOurLeft.X];
         }
 
         public Point CurrentPosition { get; set; }
 
         public void TurnRight()
         {
-            switch (m_direc)
+            switch (_mDirec)
             {
                 case Orientation.North:
-                    m_direc = Orientation.East;
+                    _mDirec = Orientation.East;
                     break;
                 case Orientation.East:
-                    m_direc = Orientation.South;
+                    _mDirec = Orientation.South;
                     break;
                 case Orientation.South:
-                    m_direc = Orientation.West;
+                    _mDirec = Orientation.West;
                     break;
                 case Orientation.West:
-                    m_direc = Orientation.North;
+                    _mDirec = Orientation.North;
                     break;
                 default:
                     throw new Exception();
@@ -64,19 +64,19 @@ namespace MazeSolver
 
         public void TurnLeft()
         {
-            switch (m_direc)
+            switch (_mDirec)
             {
                 case Orientation.North:
-                    m_direc = Orientation.West;
+                    _mDirec = Orientation.West;
                     break;
                 case Orientation.West:
-                    m_direc = Orientation.South;
+                    _mDirec = Orientation.South;
                     break;
                 case Orientation.South:
-                    m_direc = Orientation.East;
+                    _mDirec = Orientation.East;
                     break;
                 case Orientation.East:
-                    m_direc = Orientation.North;
+                    _mDirec = Orientation.North;
                     break;
                 default:
                     throw new Exception();
@@ -87,7 +87,7 @@ namespace MazeSolver
         {
             var desiredPoint = new Point(CurrentPosition.X, CurrentPosition.Y);
 
-            switch (m_direc)
+            switch (_mDirec)
             {
                 case Orientation.North:
                     desiredPoint.Y -= 1;
@@ -105,7 +105,7 @@ namespace MazeSolver
                     throw new Exception();
             }
 
-            var canMoveForward = m_MazeGrid.Grid[desiredPoint.Y][desiredPoint.X];
+            var canMoveForward = _mMazeGrid.Grid[desiredPoint.Y][desiredPoint.X];
             if (canMoveForward) CurrentPosition = desiredPoint;
             return canMoveForward;
         }
