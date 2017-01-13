@@ -1,6 +1,7 @@
-CodeKatas
+Code For Kata
 =========
 
-Code associated with katas at Red Gate
+Code associated with TDDBuddy.com Maze Walker kata.
+The katas was sourced from Redgate's Blog and modifed slightly.
 
-For information see the Code Katas in the technical blog at http://dev.red-gate.com/category/blog/technical/.
+For information on the original kata see https://www.red-gate.com/blog/building/code-kata-2-amaze.
