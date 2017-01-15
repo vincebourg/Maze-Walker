@@ -11,8 +11,10 @@ namespace MazeSolver
             /*
              * maze1.txt works
              * maze2.txt gets stuck
+             * If using NUnit 3 - You will need to append TestContext.CurrentContext.TestDirectory to front of path to make it work properly
+             * And do not use Path.Combine. If Path1 contains a C:\ it will always just return path2? Ask MS why.
              */
-            mazeApp.Run(@"..\..\..\..\maze1.txt");
+            mazeApp.Run(@"MazeFiles\maze1.txt");
         }
 
         private void Run(string mazeFilePath)
