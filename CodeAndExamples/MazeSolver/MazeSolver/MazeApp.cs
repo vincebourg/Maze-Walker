@@ -15,10 +15,12 @@ namespace MazeSolver
              * And do not use Path.Combine. If Path1 contains a C:\ it will always just return path2? Ask MS why.
              */
             mazeApp.Run(@"MazeFiles\maze1.txt");
+            Console.ReadLine();
         }
 
         private void Run(string mazeFilePath)
         {
+            // todo: handle \n newline characters instead of Environment.NewLine when you download a zip file
             var lines = new StreamReader(new FileStream(mazeFilePath, FileMode.Open)).ReadToEnd().Replace(" ", "").Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             Point start = null;
             Point finish = null;
