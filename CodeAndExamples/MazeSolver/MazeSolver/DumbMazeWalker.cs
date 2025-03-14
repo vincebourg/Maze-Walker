@@ -2,6 +2,9 @@
 {
     public class DumbMazeWalker
     {
+        private readonly Orientation[] orientations =
+            [Orientation.North, Orientation.East, Orientation.South, Orientation.West];
+
         private readonly Dictionary<Orientation, Point> UnitVectors =
             new()
             {
@@ -11,8 +14,6 @@
                 { Orientation.West, new Point(-1, 0) }
             };
 
-        private readonly Orientation[] orientations =
-            [Orientation.North, Orientation.East, Orientation.South, Orientation.West];
         private readonly MazeGrid _mMazeGrid;
         private Orientation _mDirec;
 
@@ -28,14 +29,13 @@
         public bool CanSeeLeftTurning()
         {
             var pointToOurLeft = CurrentPosition + UnitVectors[GetLeftOrientation()];
-
-            return _mMazeGrid.Grid[pointToOurLeft.Y][pointToOurLeft.X];
+            return _mMazeGrid.IsAllowed(pointToOurLeft);
         }
 
         public bool MoveForward()
         {
             var desiredPoint = UnitVectors[_mDirec] + CurrentPosition;
-            var canMoveForward = _mMazeGrid.Grid[desiredPoint.Y][desiredPoint.X];
+            var canMoveForward = _mMazeGrid.IsAllowed(desiredPoint);
             if (canMoveForward) CurrentPosition = desiredPoint;
             return canMoveForward;
         }

@@ -27,5 +27,7 @@
         public Point Finish { get; }
 
         public bool[][] Grid { get; }
+
+        public bool IsAllowed(Point location) => Grid[location.Y][location.X];
     }
 }
