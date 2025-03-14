@@ -1,7 +1,9 @@
 ﻿using System.Collections.Immutable;
 
 namespace MazeSolver
+
 {
+
     public class MazeApp
     {
         public static void Main()
@@ -47,51 +49,10 @@ namespace MazeSolver
 
         private static MazeGrid ExtractMaze(ImmutableArray<string> lines)
         {
-            Point? startBuilder = null;
-            Point? finishBuilder = null;
+            var builder = new MazeBuilder(lines);
 
-            var grid = new bool[lines.Length][];
-            int currentRow = 0;
-
-            foreach (var line in lines)
-            {
-                grid[currentRow] = new bool[line.Length];
-                int currentCol = 0;
-
-                foreach (var character in line)
-                {
-                    switch (character)
-                    {
-                        case '#':
-                            grid[currentRow][currentCol] = false;
-                            break;
-                        case '.':
-                            grid[currentRow][currentCol] = true;
-                            break;
-                        case 'S':
-                            grid[currentRow][currentCol] = true;
-                            startBuilder = new Point(currentCol, currentRow);
-                            break;
-                        case 'F':
-                            grid[currentRow][currentCol] = true;
-                            finishBuilder = new Point(currentCol, currentRow);
-                            break;
-                        default:
-                            throw new Exception("Maze input string contains invalid characters");
-                    }
-
-                    currentCol++;
-                }
-
-                currentRow++;
-            }
-
-            if (startBuilder == null) throw new Exception("Maze should have a start position set.");
-            if (finishBuilder == null) throw new Exception("Maze should have a finish position set.");
-
-
-            var maze = new MazeGrid(grid, startBuilder, finishBuilder);
-            return maze;
+            return builder.Build();
         }
+
     }
 }

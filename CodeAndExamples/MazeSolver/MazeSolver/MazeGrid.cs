@@ -10,6 +10,10 @@
         // v
         // +ve Y
 
+        private readonly bool[][] Grid;
+        public Point StartPosition { get; }
+        public Point Finish { get; }
+
         public MazeGrid(bool[][] grid, Point start, Point finish)
         {
             Grid = grid;
@@ -17,17 +21,8 @@
             Finish = finish;
         }
 
-        public Point StartPosition { get; }
-
-        public bool AtFinish(DumbMazeWalker walker)
-        {
-            return Finish.X == walker.CurrentPosition.X && Finish.Y == walker.CurrentPosition.Y;
-        }
-
-        public Point Finish { get; }
-
-        public bool[][] Grid { get; }
-
         public bool IsAllowed(Point location) => Grid[location.Y][location.X];
     }
+
+
 }
