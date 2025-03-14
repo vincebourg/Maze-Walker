@@ -15,29 +15,27 @@
 
         public MazeGrid Build()
         {
-            var currentRow = 0;
             var grid = new bool[_lines.Length][];
 
-            foreach (var line in _lines)
+            for (int i = 0; i < _lines.Length; i++)
             {
-                int currentColumn = 0;
-                grid[currentRow] = new bool[line.Length];
-                foreach (var character in line)
+                var line = _lines[i];
+                grid[i] = new bool[line.Length];
+
+                for (int j = 0; j < line.Length; j++)
                 {
+                    var character = line[j];
                     var parsedCharacter = ProcessMazeCharacter(character);
                     if (parsedCharacter.IsStart)
                     {
-                        _start = new Point(currentColumn, currentRow);
+                        _start = new Point(j, i);
                     }
                     if (parsedCharacter.IsEnd)
                     {
-                        _finish = new Point(currentColumn, currentRow);
+                        _finish = new Point(j, i);
                     }
-                    grid[currentRow][currentColumn] = parsedCharacter.IsAllowed;
-
-                    currentColumn++;
+                    grid[i][j] = parsedCharacter.IsAllowed;
                 }
-                currentRow++;
             }
 
             if (_start == null) throw new Exception("Maze should have a start position set.");
