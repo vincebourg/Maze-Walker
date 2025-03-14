@@ -97,7 +97,7 @@ namespace MazeSolver
             if (finishBuilder == null) throw new Exception("Maze should have a finish position set.");
 
 
-            var maze = new MazeGrid(grid, startBuilder!, finishBuilder!);
+            var maze = new MazeGrid(grid, startBuilder, finishBuilder);
             return maze;
         }
     }
