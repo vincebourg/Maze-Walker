@@ -23,8 +23,8 @@ namespace MazeSolver
         {
             // todo: handle \n newline characters instead of Environment.NewLine when you download a zip file
             var lines = File.ReadAllLines(mazeFilePath).Select(line => line.Replace(" ", "")).ToImmutableArray();
-            Point start = null;
-            Point finish = null;
+            Point? startBuilder = null;
+            Point? finishBuilder = null;
 
             var grid = new bool[lines.Length][];
             int currentRow = 0;
@@ -46,11 +46,11 @@ namespace MazeSolver
                             break;
                         case 'S':
                             grid[currentRow][currentCol] = true;
-                            start = new Point(currentCol, currentRow);
+                            startBuilder = new Point(currentCol, currentRow);
                             break;
                         case 'F':
                             grid[currentRow][currentCol] = true;
-                            finish = new Point(currentCol, currentRow);
+                            finishBuilder = new Point(currentCol, currentRow);
                             break;
                         default:
                             throw new Exception("Maze input string contains invalid characters");
@@ -62,8 +62,11 @@ namespace MazeSolver
                 currentRow++;
             }
 
-            if (start == null) throw new Exception("Maze should have a start position set.");
-            if (finish == null) throw new Exception("Maze should have a finish position set.");
+            if (startBuilder == null) throw new Exception("Maze should have a start position set.");
+            if (finishBuilder == null) throw new Exception("Maze should have a finish position set.");
+
+            Point start = startBuilder!;
+            Point finish = finishBuilder!;
 
             var maze = new MazeGrid(grid, start, finish);
             var entity = new DumbMazeWalker(maze);
