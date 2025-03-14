@@ -10,18 +10,18 @@
         // v
         // +ve Y
 
-        private readonly bool[][] Grid;
+        private readonly Cell[][] Grid;
         public Point StartPosition { get; }
         public Point Finish { get; }
 
-        public MazeGrid(bool[][] grid, Point start, Point finish)
+        public MazeGrid(Cell[][] grid, Point start, Point finish)
         {
             Grid = grid;
             StartPosition = start;
             Finish = finish;
         }
 
-        public bool IsAllowed(Point location) => Grid[location.Y][location.X];
+        public bool IsAllowed(Point location) => Grid[location.Y][location.X] is not Cell.Wall;
     }
 
 

@@ -1,7 +1,7 @@
 ﻿namespace MazeSolver
 
 {
-    public class MazeBuilder
+    public partial class MazeBuilder
     {
         private readonly string[] _lines;
         private Point? _start;
@@ -15,26 +15,27 @@
 
         public MazeGrid Build()
         {
-            var grid = new bool[_lines.Length][];
+            var grid = new Cell[_lines.Length][];
 
             for (int i = 0; i < _lines.Length; i++)
             {
                 var line = _lines[i];
-                grid[i] = new bool[line.Length];
+                grid[i] = new Cell[line.Length];
 
                 for (int j = 0; j < line.Length; j++)
                 {
                     var character = line[j];
                     var parsedCharacter = ProcessMazeCharacter(character);
-                    if (parsedCharacter.IsStart)
+                    grid[i][j] = parsedCharacter;
+                    switch (parsedCharacter)
                     {
-                        _start = new Point(j, i);
+                        case Cell.Start:
+                            _start = new Point(j, i);
+                            break;
+                        case Cell.Finish:
+                            _finish = new Point(j, i);
+                            break;
                     }
-                    if (parsedCharacter.IsEnd)
-                    {
-                        _finish = new Point(j, i);
-                    }
-                    grid[i][j] = parsedCharacter.IsAllowed;
                 }
             }
 
@@ -47,14 +48,16 @@
         }
 
         public record ProcessMazeCharacterResult(bool IsAllowed, bool IsStart, bool IsEnd);
-        private static ProcessMazeCharacterResult ProcessMazeCharacter(char character)
+
+
+        private static Cell ProcessMazeCharacter(char character)
         {
             return character switch
             {
-                '#' => new ProcessMazeCharacterResult(false, false, false),
-                '.' => new ProcessMazeCharacterResult(true, false, false),
-                'S' => new ProcessMazeCharacterResult(true, true, false),
-                'F' => new ProcessMazeCharacterResult(true, false, true),
+                '#' => Cell.Wall,
+                '.' => Cell.Path,
+                'S' => Cell.Start,
+                'F' => Cell.Finish,
                 _ => throw new Exception("Maze input string contains invalid characters")
             };
         }
