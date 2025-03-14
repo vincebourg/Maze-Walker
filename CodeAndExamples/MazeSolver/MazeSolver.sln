@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeSolver", "MazeSolver\MazeSolver.csproj", "{3D5F2077-38A3-4F66-94CF-2A9FF330BF33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeSolverTests", "MazeSolverTests\MazeSolverTests.csproj", "{2F4B0F83-2628-45F4-8AE3-E6E9C2FEC09B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D5F2077-38A3-4F66-94CF-2A9FF330BF33} = {3D5F2077-38A3-4F66-94CF-2A9FF330BF33}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

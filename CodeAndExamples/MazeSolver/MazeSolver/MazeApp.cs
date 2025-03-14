@@ -18,7 +18,7 @@ namespace MazeSolver
             Console.ReadLine();
         }
 
-        private void Run(string mazeFilePath)
+        public void Run(string mazeFilePath)
         {
             // todo: handle \n newline characters instead of Environment.NewLine when you download a zip file
             var lines = new StreamReader(new FileStream(mazeFilePath, FileMode.Open)).ReadToEnd().Replace(" ", "").Split(new[] { Environment.NewLine }, StringSplitOptions.None);
