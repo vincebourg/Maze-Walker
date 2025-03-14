@@ -1,11 +1,21 @@
-﻿using System;
-
-namespace MazeSolver
+﻿namespace MazeSolver
 {
     public class DumbMazeWalker
     {
+        private readonly Dictionary<Orientation, Point> UnitVectors =
+            new()
+            {
+                { Orientation.North, new Point(0, -1) },
+                { Orientation.East, new Point(1, 0) },
+                { Orientation.South, new Point(0, 1) },
+                { Orientation.West, new Point(-1, 0) }
+            };
+
+        private readonly Orientation[] orientations =
+            [Orientation.North, Orientation.East, Orientation.South, Orientation.West];
         private readonly MazeGrid _mMazeGrid;
         private Orientation _mDirec;
+
         public Point CurrentPosition { get; private set; }
 
         public DumbMazeWalker(MazeGrid mazeGrid)
@@ -17,61 +27,40 @@ namespace MazeSolver
 
         public bool CanSeeLeftTurning()
         {
-            int currentX = CurrentPosition.X;
-            int currentY = CurrentPosition.Y;
-            var pointToOurLeft = _mDirec switch
-            {
-                Orientation.North => CurrentPosition with { X = currentX - 1 },
-                Orientation.South => CurrentPosition with { X = currentX + 1 },
-                Orientation.East => CurrentPosition with { Y = currentY - 1 },
-                Orientation.West => CurrentPosition with { Y = currentY + 1 },
-                _ => throw new Exception(),
-            };
+            var pointToOurLeft = CurrentPosition + UnitVectors[GetLeftOrientation()];
+
             return _mMazeGrid.Grid[pointToOurLeft.Y][pointToOurLeft.X];
         }
 
         public bool MoveForward()
         {
-            var desiredPoint = _mDirec switch
-            {
-                Orientation.North => new Point(CurrentPosition.X, CurrentPosition.Y - 1),
-                Orientation.South => new Point(CurrentPosition.X, CurrentPosition.Y + 1),
-                Orientation.East => new Point(CurrentPosition.X + 1, CurrentPosition.Y),
-                Orientation.West => new Point(CurrentPosition.X - 1, CurrentPosition.Y),
-                _ => throw new NotImplementedException()
-            };
-
+            var desiredPoint = UnitVectors[_mDirec] + CurrentPosition;
             var canMoveForward = _mMazeGrid.Grid[desiredPoint.Y][desiredPoint.X];
             if (canMoveForward) CurrentPosition = desiredPoint;
             return canMoveForward;
         }
+
         public void TurnRight()
         {
-            _mDirec = _mDirec switch
-            {
-                Orientation.North => Orientation.East,
-                Orientation.East => Orientation.South,
-                Orientation.South => Orientation.West,
-                Orientation.West => Orientation.North,
-                _ => throw new Exception(),
-            };
+            var index = Array.IndexOf(orientations, _mDirec);
+            _mDirec = orientations[(index + 1) % orientations.Length];
         }
 
         public void TurnLeft()
         {
-            _mDirec = _mDirec switch
-            {
-                Orientation.North => Orientation.West,
-                Orientation.West => Orientation.South,
-                Orientation.South => Orientation.East,
-                Orientation.East => Orientation.North,
-                _ => throw new Exception(),
-            };
+            Orientation orientation = GetLeftOrientation();
+            _mDirec = orientation;
+        }
+
+        private Orientation GetLeftOrientation()
+        {
+            var index = Array.IndexOf(orientations, _mDirec);
+            var orientation = orientations[(index - 1) % orientations.Length];
+            return orientation;
         }
 
         internal bool AtFinish()
         {
-
             return CurrentPosition == _mMazeGrid.Finish;
         }
     }

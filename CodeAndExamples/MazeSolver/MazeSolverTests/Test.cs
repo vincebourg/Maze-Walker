@@ -11,7 +11,7 @@ public class Test
         StringBuilder output = new StringBuilder();
         Console.SetOut(new StringWriter(output));
         var mazeApp = new MazeApp();
-        mazeApp.Run(@"MazeFiles\maze1.txt");
+        MazeApp.Run(@"MazeFiles\maze1.txt");
 
         const string expectedOutput = """
             Point(1, 1)

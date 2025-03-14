@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Immutable;
-using System.IO;
+﻿using System.Collections.Immutable;
 
 namespace MazeSolver
 {
@@ -8,28 +6,24 @@ namespace MazeSolver
     {
         public static void Main()
         {
-            var mazeApp = new MazeApp();
             /*
              * maze1.txt works
              * maze2.txt gets stuck
              * If using NUnit 3 - You will need to append TestContext.CurrentContext.TestDirectory to front of path to make it work properly
              * And do not use Path.Combine. If Path1 contains a C:\ it will always just return path2? Ask MS why.
              */
-            mazeApp.Run(@"MazeFiles\maze1.txt");
+            Run(@"MazeFiles\maze1.txt");
             Console.ReadLine();
         }
 
-        public void Run(string mazeFilePath)
+        public static void Run(string mazeFilePath)
         {
-            // todo: handle \n newline characters instead of Environment.NewLine when you download a zip file
             var lines = File.ReadAllLines(mazeFilePath).Select(line => line.Replace(" ", "")).ToImmutableArray();
 
             MazeGrid maze = ExtractMaze(lines);
             var walker = new DumbMazeWalker(maze);
 
-            bool endOfMazeReached = false;
-
-            while (!endOfMazeReached)
+            while (!walker.AtFinish())
             {
                 var couldMoveForward = walker.MoveForward();
 
@@ -45,7 +39,6 @@ namespace MazeSolver
                     }
                 }
 
-                endOfMazeReached = walker.AtFinish();
                 Console.WriteLine(walker.CurrentPosition);
             }
 
@@ -65,9 +58,9 @@ namespace MazeSolver
                 grid[currentRow] = new bool[line.Length];
                 int currentCol = 0;
 
-                foreach (var point in line)
+                foreach (var character in line)
                 {
-                    switch (point)
+                    switch (character)
                     {
                         case '#':
                             grid[currentRow][currentCol] = false;
