@@ -25,28 +25,28 @@ namespace MazeSolver
             var lines = File.ReadAllLines(mazeFilePath).Select(line => line.Replace(" ", "")).ToImmutableArray();
 
             MazeGrid maze = ExtractMaze(lines);
-            var entity = new DumbMazeWalker(maze);
+            var walker = new DumbMazeWalker(maze);
 
             bool endOfMazeReached = false;
 
             while (!endOfMazeReached)
             {
-                var couldMoveForward = entity.MoveForward();
+                var couldMoveForward = walker.MoveForward();
 
                 if (!couldMoveForward)
                 {
-                    entity.TurnRight();
+                    walker.TurnRight();
                 }
                 else
                 {
-                    if (entity.CanSeeLeftTurning())
+                    if (walker.CanSeeLeftTurning())
                     {
-                        entity.TurnLeft();
+                        walker.TurnLeft();
                     }
                 }
 
-                endOfMazeReached = maze.AtFinish(entity);
-                Console.WriteLine(entity.CurrentPosition);
+                endOfMazeReached = walker.AtFinish();
+                Console.WriteLine(walker.CurrentPosition);
             }
 
             Console.WriteLine("Reached end of maze! :)");

@@ -17,17 +17,34 @@ namespace MazeSolver
 
         public bool CanSeeLeftTurning()
         {
+            int currentX = CurrentPosition.X;
+            int currentY = CurrentPosition.Y;
             var pointToOurLeft = _mDirec switch
             {
-                Orientation.North => new Point(CurrentPosition.X - 1, CurrentPosition.Y),
-                Orientation.South => new Point(CurrentPosition.X + 1, CurrentPosition.Y),
-                Orientation.East => new Point(CurrentPosition.X, CurrentPosition.Y - 1),
-                Orientation.West => new Point(CurrentPosition.X, CurrentPosition.Y + 1),
+                Orientation.North => CurrentPosition with { X = currentX - 1 },
+                Orientation.South => CurrentPosition with { X = currentX + 1 },
+                Orientation.East => CurrentPosition with { Y = currentY - 1 },
+                Orientation.West => CurrentPosition with { Y = currentY + 1 },
                 _ => throw new Exception(),
             };
             return _mMazeGrid.Grid[pointToOurLeft.Y][pointToOurLeft.X];
         }
 
+        public bool MoveForward()
+        {
+            var desiredPoint = _mDirec switch
+            {
+                Orientation.North => new Point(CurrentPosition.X, CurrentPosition.Y - 1),
+                Orientation.South => new Point(CurrentPosition.X, CurrentPosition.Y + 1),
+                Orientation.East => new Point(CurrentPosition.X + 1, CurrentPosition.Y),
+                Orientation.West => new Point(CurrentPosition.X - 1, CurrentPosition.Y),
+                _ => throw new NotImplementedException()
+            };
+
+            var canMoveForward = _mMazeGrid.Grid[desiredPoint.Y][desiredPoint.X];
+            if (canMoveForward) CurrentPosition = desiredPoint;
+            return canMoveForward;
+        }
         public void TurnRight()
         {
             _mDirec = _mDirec switch
@@ -52,20 +69,10 @@ namespace MazeSolver
             };
         }
 
-        public bool MoveForward()
+        internal bool AtFinish()
         {
-            var desiredPoint = _mDirec switch
-            {
-                Orientation.North => new Point(CurrentPosition.X, CurrentPosition.Y - 1),
-                Orientation.South => new Point(CurrentPosition.X, CurrentPosition.Y + 1),
-                Orientation.East => new Point(CurrentPosition.X + 1, CurrentPosition.Y),
-                Orientation.West => new Point(CurrentPosition.X - 1, CurrentPosition.Y),
-                _ => throw new NotImplementedException()
-            };
 
-            var canMoveForward = _mMazeGrid.Grid[desiredPoint.Y][desiredPoint.X];
-            if (canMoveForward) CurrentPosition = desiredPoint;
-            return canMoveForward;
+            return CurrentPosition == _mMazeGrid.Finish;
         }
     }
 }
