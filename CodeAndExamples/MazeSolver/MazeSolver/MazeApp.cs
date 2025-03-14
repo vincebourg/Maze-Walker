@@ -23,6 +23,37 @@ namespace MazeSolver
         {
             // todo: handle \n newline characters instead of Environment.NewLine when you download a zip file
             var lines = File.ReadAllLines(mazeFilePath).Select(line => line.Replace(" ", "")).ToImmutableArray();
+
+            MazeGrid maze = ExtractMaze(lines);
+            var entity = new DumbMazeWalker(maze);
+
+            bool endOfMazeReached = false;
+
+            while (!endOfMazeReached)
+            {
+                var couldMoveForward = entity.MoveForward();
+
+                if (!couldMoveForward)
+                {
+                    entity.TurnRight();
+                }
+                else
+                {
+                    if (entity.CanSeeLeftTurning())
+                    {
+                        entity.TurnLeft();
+                    }
+                }
+
+                endOfMazeReached = maze.AtFinish(entity);
+                Console.WriteLine(entity.CurrentPosition);
+            }
+
+            Console.WriteLine("Reached end of maze! :)");
+        }
+
+        private static MazeGrid ExtractMaze(ImmutableArray<string> lines)
+        {
             Point? startBuilder = null;
             Point? finishBuilder = null;
 
@@ -65,35 +96,9 @@ namespace MazeSolver
             if (startBuilder == null) throw new Exception("Maze should have a start position set.");
             if (finishBuilder == null) throw new Exception("Maze should have a finish position set.");
 
-            Point start = startBuilder!;
-            Point finish = finishBuilder!;
 
-            var maze = new MazeGrid(grid, start, finish);
-            var entity = new DumbMazeWalker(maze);
-
-            bool endOfMazeReached = false;
-
-            while (!endOfMazeReached)
-            {
-                var couldMoveForward = entity.MoveForward();
-
-                if (!couldMoveForward)
-                {
-                    entity.TurnRight();
-                }
-                else
-                {
-                    if (entity.CanSeeLeftTurning())
-                    {
-                        entity.TurnLeft();
-                    }
-                }
-
-                endOfMazeReached = maze.AtFinish(entity);
-                Console.WriteLine(entity.CurrentPosition);
-            }
-
-            Console.WriteLine("Reached end of maze! :)");
+            var maze = new MazeGrid(grid, startBuilder!, finishBuilder!);
+            return maze;
         }
     }
 }
